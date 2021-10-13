@@ -2,12 +2,21 @@ import dns
 import socket
 import sys
 
-# user passed in value s= "google.com"
-# use s.split('.')
+s = input("Please enter a domain: ")
+split_domain = s.split('.')
+
+ip = input("Type 1 for IPv4 or 2 for IPv6: ")
+if (ip == '2'):
+    ip_chosen = 28
+else :
+    ip_chosen = 1
+   
+print(ip_chosen)
+
 
 question = dns.DNSQuestion(
-    qname=["tudublin", "ie"],
-    qtype=1,  # 28 for ipv6
+    qname=split_domain,
+    qtype=ip_chosen,  # 28 for ipv6 1 foiov4
     qclass=1
 )
 
@@ -34,15 +43,25 @@ datagram = dns.DNSDatagram(
 )
 
 datagram_bytes = dns.make_dns_datagram(datagram)
-destination = ('HEIMDALL.ict.ad.dit.ie', 53)
+destination = ('127.0.0.53', 53)
 connection = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 connection.sendto(datagram_bytes, destination)
 
-result = connection.recvfrom(4096)[0]
+init_result = connection.recvfrom(4096)[0]
 
-print(result)
+print(init_result)
 
-print(dns.read_dns_datagram(result))
+result = dns.read_dns_datagram(init_result)
 
-
-# print(f`{answer.rdata[0]}.{answer.rdata[1]}.{answer.rdata[2]}.{answer.rdata[3]}`)
+if (ip_chosen == 1):
+    for i in range(len((result.answers))):
+        print(f"{result.answers[i].rdata[0]}.{result.answers[i].rdata[1]}.{result.answers[i].rdata[2]}.{result.answers[i].rdata[3]}")
+else:
+    for i in range(len((result.answers))):
+        hexstring = result.answers[i].rdata.hex()
+        hex_segments = [hexstring[i:i+4] for i in range(0, len(hexstring), 4)]
+        for j in range(len(hex_segments)):
+            print(hex_segments[j] + ":", end='')
+        
+        print(" ")
+    

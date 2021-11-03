@@ -43,7 +43,7 @@ datagram = dns.DNSDatagram(
 )
 
 datagram_bytes = dns.make_dns_datagram(datagram)
-destination = ('127.0.0.53', 53)
+destination = ('127.0.0.1', 53)
 connection = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 connection.sendto(datagram_bytes, destination)
 

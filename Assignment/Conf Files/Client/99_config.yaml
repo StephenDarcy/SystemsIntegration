@@ -1,0 +1,18 @@
+#network:
+# version: 2
+# renderer: networkd
+# ethernets:
+#  enp0s8:
+#   dhcp4: true
+
+network:
+ version: 2
+ renderer: networkd
+ ethernets:
+  enp0s8:
+   dhcp4: true
+   gateway4: 192.168.0.117
+   nameservers:
+    addresses:
+     - 192.168.0.117
+     - 192.168.0.1

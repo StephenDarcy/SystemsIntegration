@@ -4,6 +4,7 @@
 # ethernets:
 #  enp0s8:
 #   dhcp4: true
+# ! not always commented out
 
 network:
  version: 2
